@@ -1,81 +1,101 @@
+"use client";
 import {
-  Globe,
+  Check,
+  ArrowRight,
   Code,
-  ShoppingBag,
-  Square,
-  Circle,
-  Grid,
-  Rocket,
-  Wrench,
+  ShoppingCart,
+  Zap,
+  Search,
 } from "lucide-react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent } from "@/components/ui/card";
 
-export function ServicesSection() {
-  const services = [
-    {
-      icon: Globe,
-      title: "WordPress",
-      description:
-        "Custom WordPress themes and plugins tailored to your business needs.",
-    },
-    {
+export function Services() {
+  const services = {
+    "custom-websites": {
       icon: Code,
-      title: "React & Next.js",
+      title: "Custom Websites",
       description:
-        "Modern web applications with the latest React and Next.js frameworks.",
+        "Tailored websites that perfectly match your brand and business needs.",
+      features: [
+        "Responsive design for all devices",
+        "SEO optimization built-in",
+        "Custom functionality",
+        "Content management systems",
+      ],
+      technologies: [
+        "WordPress",
+        "Next.js",
+        "React",
+        "Webflow",
+        "Wix",
+        "HubSpot",
+      ],
+      // Replace with your UploadThing custom websites image URL
+      image:
+        "https://eba88uequf.ufs.sh/f/1ZJ049kRLBlDxF4sIgrN4vSMbWQw2Cr7fqcnaTKXJkzheEIt",
     },
-    {
-      icon: ShoppingBag,
-      title: "Shopify",
-      description: "E-commerce stores with custom themes and functionalities.",
-    },
-    {
-      icon: Square,
-      title: "Wix",
-      description: "Professional Wix websites with custom code integration.",
-    },
-    {
-      icon: Circle,
-      title: "Webflow",
+    "e-commerce": {
+      icon: ShoppingCart,
+      title: "E-commerce",
       description:
-        "Stunning Webflow sites with complex interactions and animations.",
+        "Powerful online stores that drive sales and enhance customer experience.",
+      features: [
+        "Secure payment processing",
+        "Inventory management",
+        "Mobile-optimized checkout",
+        "Analytics and reporting",
+      ],
+      technologies: ["Shopify", "WooCommerce", "Next.js", "Custom"],
+      // Replace with your UploadThing e-commerce image URL
+      image:
+        "https://eba88uequf.ufs.sh/f/1ZJ049kRLBlDw8XbIt7f8PSjK3csD9IVhHLt14ZUx0JeRWlE",
     },
-    {
-      icon: Grid,
-      title: "HubSpot & Kajabi",
+    "web-applications": {
+      icon: Zap,
+      title: "Web Applications",
       description:
-        "Marketing-focused websites integrated with HubSpot or Kajabi.",
+        "Scalable web applications built with modern technologies and frameworks.",
+      features: [
+        "Real-time functionality",
+        "User authentication",
+        "Database integration",
+        "API development",
+      ],
+      technologies: ["React", "Next.js", "Webflow", "HubSpot"],
+      // Replace with your UploadThing web applications image URL
+      image:
+        "https://eba88uequf.ufs.sh/f/1ZJ049kRLBlDmUfABkjNxSFgVvqeKWOEdhCBY0csaMP8zbuw",
     },
-    {
-      icon: Rocket,
-      title: "SEO Optimization",
+    "digital-marketing": {
+      icon: Search,
+      title: "Digital Marketing",
       description:
-        "Websites built with search engines in mind for better rankings.",
+        "Comprehensive digital marketing strategies to grow your online presence.",
+      features: [
+        "Search engine optimization",
+        "Social media marketing",
+        "Content strategy",
+        "Performance tracking",
+      ],
+      technologies: ["HubSpot", "WordPress", "Wix", "Webflow"],
+      // Replace with your UploadThing digital marketing image URL
+      image:
+        "https://eba88uequf.ufs.sh/f/1ZJ049kRLBlDmzStLRjNxSFgVvqeKWOEdhCBY0csaMP8zbuw",
     },
-    {
-      icon: Wrench,
-      title: "Website Maintenance",
-      description:
-        "Regular updates, and ongoing support to keep your website running smoothly.",
-    },
-  ];
+  };
 
   return (
-    <section id="services" className="w-full py-16 md:py-20 bg-muted/50">
+    <section id="services" className="w-full py-16 md:py-20 bg-background">
       <div className="container mx-auto px-4 max-w-7xl">
         <div className="text-center space-y-4 mb-16">
           <Badge variant="secondary" className="px-4 py-2">
-            Main Services
-          </Badge>
+            Our Services
+          </Badge>{" "}
           <h2 className="text-3xl md:text-4xl font-bold">
-            Our Services & Expertise
+            Tailored Digital Services & Solutions
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             We specialize in crafting custom websites across various platforms,
@@ -83,23 +103,133 @@ export function ServicesSection() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {services.map((service, index) => {
+        {/* Mobile View - Cards */}
+        <div className="block lg:hidden space-y-6">
+          {Object.entries(services).map(([key, service]) => {
             const Icon = service.icon;
             return (
-              <Card key={index} className="transition-all hover:shadow-md">
-                <CardHeader>
-                  <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                    <Icon className="w-6 h-6 text-primary" />
+              <Card key={key} className="overflow-hidden">
+                <CardContent className="p-0">
+                  <div className="aspect-[4/3] w-full pt-0 pb-4 px-4">
+                    <img
+                      src={service.image || "/placeholder.svg"}
+                      alt={service.title}
+                      className="w-full h-full object-cover rounded-lg"
+                    />
                   </div>
-                  <CardTitle className="text-lg">{service.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription>{service.description}</CardDescription>
+                  <div className="pt-2 pb-2 px-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
+                        <Icon className="w-6 h-6 text-primary" />
+                      </div>
+                      <h3 className="text-2xl font-bold">{service.title}</h3>
+                    </div>
+                    <p className="text-muted-foreground mb-4">
+                      {service.description}
+                    </p>
+                    <div className="space-y-3 mb-4">
+                      {service.features.map((feature, index) => (
+                        <div key={index} className="flex items-center gap-3">
+                          <div className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center">
+                            <Check className="w-4 h-4 text-white" />
+                          </div>
+                          <span>{feature}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <div>
+                      <p className="font-medium mb-3">Technologies:</p>
+                      <div className="flex flex-wrap gap-2">
+                        {service.technologies.map((tech, index) => (
+                          <Badge key={index} variant="outline">
+                            {tech}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
             );
           })}
+        </div>
+
+        {/* Desktop View - Tabs */}
+        <div className="hidden lg:block">
+          <Tabs defaultValue="custom-websites" className="w-full">
+            <TabsList className="grid w-full grid-cols-4 mb-8">
+              {Object.entries(services).map(([key, service]) => {
+                const Icon = service.icon;
+                return (
+                  <TabsTrigger
+                    key={key}
+                    value={key}
+                    className="flex items-center gap-2"
+                  >
+                    <Icon className="w-4 h-4" />
+                    <span>{service.title}</span>
+                  </TabsTrigger>
+                );
+              })}
+            </TabsList>
+
+            {Object.entries(services).map(([key, service]) => {
+              const Icon = service.icon;
+              return (
+                <TabsContent key={key} value={key}>
+                  <Card className="overflow-hidden">
+                    <CardContent className="p-0">
+                      <div className="grid grid-cols-2">
+                        <div className="p-6">
+                          <div className="flex items-center gap-3 mb-4">
+                            <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
+                              <Icon className="w-6 h-6 text-primary" />
+                            </div>
+                            <h3 className="text-2xl font-bold">
+                              {service.title}
+                            </h3>
+                          </div>
+                          <p className="text-muted-foreground mb-4">
+                            {service.description}
+                          </p>
+                          <div className="space-y-3 mb-4">
+                            {service.features.map((feature, index) => (
+                              <div
+                                key={index}
+                                className="flex items-center gap-3"
+                              >
+                                <div className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center">
+                                  <Check className="w-4 h-4 text-white" />
+                                </div>
+                                <span>{feature}</span>
+                              </div>
+                            ))}
+                          </div>
+                          <div>
+                            <p className="font-medium mb-3">Technologies:</p>
+                            <div className="flex flex-wrap gap-2">
+                              {service.technologies.map((tech, index) => (
+                                <Badge key={index} variant="outline">
+                                  {tech}
+                                </Badge>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="aspect-[4/3] py-0 px-4">
+                          <img
+                            src={service.image || "/placeholder.svg"}
+                            alt={service.title}
+                            className="w-full h-full object-cover rounded-lg"
+                          />
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+              );
+            })}
+          </Tabs>
         </div>
       </div>
     </section>

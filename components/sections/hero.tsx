@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 
-export function HeroSection() {
+export function Hero() {
   const features = [
     "SEO-Optimized",
     "Conversion-Focused",
@@ -16,7 +16,7 @@ export function HeroSection() {
       <div className="container mx-auto px-4 max-w-7xl">
         <div className="flex flex-col items-center text-center space-y-8">
           <Badge variant="secondary" className="px-4 py-2">
-            Web Development Professionals
+            Kraito - Neighborhood Web Development Professionals
           </Badge>
 
           <div className="space-y-4 max-w-4xl">
@@ -32,12 +32,14 @@ export function HeroSection() {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4">
-            <Button size="lg">
-              Start Your Project
-              <ArrowRight className="ml-2 h-4 w-4" />
+            <Button size="lg" asChild>
+              <a href="#contact">
+                Start Your Project
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </a>
             </Button>
-            <Button size="lg" variant="outline">
-              View Our Portfolio
+            <Button size="lg" variant="outline" asChild>
+              <a href="#work">View Our Portfolio</a>
             </Button>
           </div>
 

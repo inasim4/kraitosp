@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
-export function WhyUsSection() {
+export function WhyUs() {
   const features = [
     {
       icon: MessagesSquare,

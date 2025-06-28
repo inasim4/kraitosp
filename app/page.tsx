@@ -1,27 +1,31 @@
 import { Header } from "@/components/sections/header";
-import { HeroSection } from "@/components/sections/hero";
-import { ServicesSection } from "@/components/sections/services";
-import { SolutionsSection } from "@/components/sections/solutions";
-import { WhyUsSection } from "@/components/sections/why-us";
-import { WorkSection } from "@/components/sections/work";
-import { FoundersSection } from "@/components/sections/founders";
-import { ContactSection } from "@/components/sections/contact";
+import { Hero } from "@/components/sections/hero";
+import { Services } from "@/components/sections/services";
+import { WhyUs } from "@/components/sections/why-us";
+import { Portfolio } from "@/components/sections/portfolio";
+import { Team } from "@/components/sections/team";
+import { Contact } from "@/components/sections/contact";
 import { Footer } from "@/components/sections/footer";
+import FloatingButtons from "@/components/sections/FloatingButtons";
+import LoadingScreen from "@/components/sections/LoadingScreen";
 
 export default function Page() {
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
-      <main className="flex-1 w-full">
-        <HeroSection />
-        <ServicesSection />
-        <SolutionsSection />
-        <WhyUsSection />
-        <WorkSection />
-        <FoundersSection />
-        <ContactSection />
-      </main>
-      <Footer />
-    </div>
+    <>
+      <LoadingScreen />
+      <div className="min-h-screen flex flex-col">
+        <Header />
+        <main className="flex-1 w-full">
+          <Hero />
+          <Services />
+          <WhyUs />
+          <Portfolio />
+          <Team />
+          <Contact />
+        </main>
+        <Footer />
+        <FloatingButtons />
+      </div>
+    </>
   );
 }

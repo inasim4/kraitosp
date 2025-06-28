@@ -77,7 +77,7 @@ type SocialLink = {
   | { type: "custom"; iconSrc: { dark: string; light: string } }
 );
 
-export function ContactSection() {
+export function Contact() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -204,8 +204,8 @@ export function ContactSection() {
     {
       icon: Phone,
       label: "Phone",
-      value: "+8801313347660",
-      href: "tel:+8801313347660",
+      value: "+8801886147123",
+      href: "tel:+8801886147123",
     },
     {
       icon: Mail,
@@ -223,8 +223,8 @@ export function ContactSection() {
 
   const socialLinks: SocialLink[] = [
     {
-      label: "+8801313347660",
-      href: "https://wa.me/8801313347660",
+      label: "+8801886147123",
+      href: "https://wa.me/8801886147123",
       icon: <BsWhatsapp size={12} />,
       type: "react-icon",
     },
@@ -448,7 +448,7 @@ export function ContactSection() {
                 <CardTitle>Our Social Presence</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   {socialLinks.map((social, index) => {
                     return (
                       <Button
