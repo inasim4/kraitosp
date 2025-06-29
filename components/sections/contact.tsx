@@ -513,29 +513,35 @@ export function Contact() {
                           <Button
                             variant="outline"
                             asChild
-                            className="justify-start"
+                            className="w-full justify-start items-center gap-2 px-4 py-2"
                           >
-                            <a href={social.href}>
-                              {/* Handle different icon types */}
-                              {social.type === "lucide" && social.icon ? (
-                                <social.icon className="w-4 h-4 mr-2" />
-                              ) : social.type === "react-icon" &&
-                                social.icon ? (
-                                <span className="mr-2">{social.icon}</span>
-                              ) : social.type === "custom" && social.iconSrc ? (
-                                <Image
-                                  src={
-                                    theme === "dark"
-                                      ? social.iconSrc.dark
-                                      : social.iconSrc.light
-                                  }
-                                  alt={`${social.label} icon`}
-                                  width={12}
-                                  height={12}
-                                  className="mr-2"
-                                />
-                              ) : null}
-                              {social.label}
+                            <a
+                              href={social.href}
+                              className="flex items-center gap-2 w-full"
+                            >
+                              <span className="w-5 h-5 flex items-center justify-center">
+                                {social.type === "lucide" && social.icon ? (
+                                  <social.icon className="w-5 h-5" />
+                                ) : social.type === "react-icon" &&
+                                  social.icon ? (
+                                  <span className="w-5 h-5 flex items-center justify-center text-base">
+                                    {social.icon}
+                                  </span>
+                                ) : social.type === "custom" &&
+                                  social.iconSrc ? (
+                                  <Image
+                                    src={
+                                      theme === "dark"
+                                        ? social.iconSrc.dark
+                                        : social.iconSrc.light
+                                    }
+                                    alt={`${social.label} icon`}
+                                    width={20}
+                                    height={20}
+                                  />
+                                ) : null}
+                              </span>
+                              <span className="truncate">{social.label}</span>
                             </a>
                           </Button>
                         </motion.div>
