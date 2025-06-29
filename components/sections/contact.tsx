@@ -8,7 +8,6 @@ import {
   Phone,
   Mail,
   MapPin,
-  MessageCircle,
   Facebook,
   Youtube,
   Linkedin,
@@ -48,6 +47,16 @@ import { toast } from "sonner";
 import { Badge } from "../ui/badge";
 import { BsWhatsapp } from "react-icons/bs";
 import type { LucideProps } from "lucide-react";
+import { motion, useInView } from "framer-motion";
+import {
+  fadeInUp,
+  fadeInLeft,
+  fadeInRight,
+  fadeIn,
+  staggerContainer,
+} from "@/lib/animations";
+import { useLoading } from "@/context/LoadingContext";
+import { useRef } from "react";
 
 // Declare global types for Turnstile
 declare global {
@@ -78,6 +87,12 @@ type SocialLink = {
 );
 
 export function Contact() {
+  const { isLoading } = useLoading();
+  const sectionRef = useRef(null);
+  const inView = useInView(sectionRef, { once: true, margin: "-50px" });
+
+  // Animation variants now imported from shared lib/animations.ts
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -255,237 +270,283 @@ export function Contact() {
   ];
 
   return (
-    <section id="contact" className="w-full py-16 md:py-20 bg-background">
+    <section id="contact" className="w-full py-16 md:py-20 bg-muted/50">
       <div className="container mx-auto px-4 max-w-7xl">
-        <div className="text-center space-y-4 mb-16">
-          <Badge variant="secondary" className="px-4 py-2">
-            Let's Craft Something Amazing
-          </Badge>
-          <h2 className="text-3xl md:text-4xl font-bold">
-            Transform Your Digital Vision
-          </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Ready to start your project? Let's discuss your vision and bring it
-            to life together.
-          </p>
-        </div>
+        <motion.div
+          ref={sectionRef}
+          className="text-center space-y-4 mb-16"
+          variants={staggerContainer}
+          initial="hidden"
+          animate={!isLoading && inView ? "visible" : "hidden"}
+        >
+          <motion.div variants={fadeInUp}>
+            <Badge variant="secondary" className="px-4 py-2">
+              Let's Craft Something
+            </Badge>
+          </motion.div>
+          <motion.h2
+            variants={fadeInUp}
+            className="text-3xl md:text-4xl font-bold"
+          >
+            Contact Us
+          </motion.h2>
+          <motion.p
+            variants={fadeInUp}
+            className="text-xl text-muted-foreground max-w-3xl mx-auto"
+          >
+            Ready to start a project or have questions? Reach out and let's
+            build something amazing together.
+          </motion.p>
+        </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-12">
-          <Card>
-            <CardHeader>
-              <CardTitle>Let's Discuss Your Project</CardTitle>
-              <CardDescription>
-                Share your ideas with us, and we'll help bring your vision to
-                life with cutting-edge web solutions.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="space-y-2">
-                  <Label htmlFor="name">Name *</Label>
-                  <Input
-                    id="name"
-                    value={formData.name}
-                    onChange={(e) => handleChange("name", e.target.value)}
-                    placeholder="Your name"
-                    required
-                    maxLength={50}
-                  />
-                </div>
+        <motion.div
+          className="grid lg:grid-cols-2 gap-12"
+          variants={staggerContainer}
+          initial="hidden"
+          animate={!isLoading && inView ? "visible" : "hidden"}
+        >
+          <motion.div variants={fadeInLeft}>
+            <motion.div variants={fadeInUp}>
+              <Card>
+                <CardHeader>
+                  <CardTitle>Let's Discuss Your Project</CardTitle>
+                  <CardDescription>
+                    Share your ideas with us, and we'll help bring your vision
+                    to life with cutting-edge web solutions.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <form onSubmit={handleSubmit} className="space-y-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="name">Name *</Label>
+                      <Input
+                        id="name"
+                        value={formData.name}
+                        onChange={(e) => handleChange("name", e.target.value)}
+                        placeholder="Your name"
+                        required
+                        maxLength={50}
+                      />
+                    </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email *</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    value={formData.email}
-                    onChange={(e) => handleChange("email", e.target.value)}
-                    placeholder="your.email@example.com"
-                    required
-                    maxLength={100}
-                  />
-                </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="email">Email *</Label>
+                      <Input
+                        id="email"
+                        type="email"
+                        value={formData.email}
+                        onChange={(e) => handleChange("email", e.target.value)}
+                        placeholder="your.email@example.com"
+                        required
+                        maxLength={100}
+                      />
+                    </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="phone">Phone (Optional)</Label>
-                  <div className="flex gap-2">
-                    <Popover open={countryOpen} onOpenChange={setCountryOpen}>
-                      <PopoverTrigger asChild>
-                        <Button
-                          variant="outline"
-                          role="combobox"
-                          aria-expanded={countryOpen}
-                          className="w-[140px] justify-between"
+                    <div className="space-y-2">
+                      <Label htmlFor="phone">Phone (Optional)</Label>
+                      <div className="flex gap-2">
+                        <Popover
+                          open={countryOpen}
+                          onOpenChange={setCountryOpen}
                         >
-                          {formData.countryCode
-                            ? countryCodes.find(
-                                (country) =>
-                                  country.code === formData.countryCode
-                              )?.code
-                            : "Select..."}
-                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-[300px] p-0">
-                        <Command>
-                          <CommandInput placeholder="Search country..." />
-                          <CommandList>
-                            <CommandEmpty>No country found.</CommandEmpty>
-                            <CommandGroup>
-                              {countryCodes.map((country) => (
-                                <CommandItem
-                                  key={country.code}
-                                  value={`${country.code} ${country.country}`}
-                                  onSelect={() => {
-                                    handleChange("countryCode", country.code);
-                                    setCountryOpen(false);
-                                  }}
-                                >
-                                  <Check
-                                    className={cn(
-                                      "mr-2 h-4 w-4",
-                                      formData.countryCode === country.code
-                                        ? "opacity-100"
-                                        : "opacity-0"
-                                    )}
-                                  />
-                                  {country.code} ({country.country})
-                                </CommandItem>
-                              ))}
-                            </CommandGroup>
-                          </CommandList>
-                        </Command>
-                      </PopoverContent>
-                    </Popover>
-                    <Input
-                      id="phone"
-                      type="tel"
-                      pattern="[0-9]*"
-                      inputMode="numeric"
-                      value={formData.phone}
-                      onChange={(e) => handleChange("phone", e.target.value)}
-                      placeholder="1234567890"
-                      className="flex-1"
-                      maxLength={15}
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="message">Project Details (Optional)</Label>
-                  <Textarea
-                    id="message"
-                    value={formData.message}
-                    onChange={(e) => handleChange("message", e.target.value)}
-                    placeholder="Tell us about your project goals, timeline, and any specific requirements..."
-                    rows={5}
-                    maxLength={1000}
-                  />
-                </div>
-
-                {/* Cloudflare Turnstile - Only render if we have the site key */}
-                {process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && (
-                  <div className="space-y-2">
-                    <Label>Security Verification *</Label>
-                    <div
-                      className="cf-turnstile"
-                      data-sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY}
-                      data-callback="onTurnstileSuccess"
-                      data-error-callback="onTurnstileError"
-                    />
-                  </div>
-                )}
-
-                <Button
-                  type="submit"
-                  className="w-full"
-                  disabled={
-                    isSubmitting ||
-                    (process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY &&
-                    !turnstileToken
-                      ? true
-                      : undefined)
-                  }
-                >
-                  {isSubmitting ? "Sending..." : "Start Your Project"}
-                  <Send className="ml-2 w-4 h-4" />
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
-
-          <div className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Connect With Us</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {contactInfo.map((info, index) => {
-                  const Icon = info.icon;
-                  return (
-                    <a
-                      key={index}
-                      href={info.href}
-                      className="flex items-center gap-4 p-3 rounded-lg hover:bg-muted transition-colors"
-                    >
-                      <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                        <Icon className="w-5 h-5 text-primary" />
+                          <PopoverTrigger asChild>
+                            <Button
+                              variant="outline"
+                              role="combobox"
+                              aria-expanded={countryOpen}
+                              className="w-[140px] justify-between"
+                            >
+                              {formData.countryCode
+                                ? countryCodes.find(
+                                    (country) =>
+                                      country.code === formData.countryCode
+                                  )?.code
+                                : "Select..."}
+                              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-[300px] p-0">
+                            <Command>
+                              <CommandInput placeholder="Search country..." />
+                              <CommandList>
+                                <CommandEmpty>No country found.</CommandEmpty>
+                                <CommandGroup>
+                                  {countryCodes.map((country) => (
+                                    <CommandItem
+                                      key={country.code}
+                                      value={`${country.code} ${country.country}`}
+                                      onSelect={() => {
+                                        handleChange(
+                                          "countryCode",
+                                          country.code
+                                        );
+                                        setCountryOpen(false);
+                                      }}
+                                    >
+                                      <Check
+                                        className={cn(
+                                          "mr-2 h-4 w-4",
+                                          formData.countryCode === country.code
+                                            ? "opacity-100"
+                                            : "opacity-0"
+                                        )}
+                                      />
+                                      {country.code} ({country.country})
+                                    </CommandItem>
+                                  ))}
+                                </CommandGroup>
+                              </CommandList>
+                            </Command>
+                          </PopoverContent>
+                        </Popover>
+                        <Input
+                          id="phone"
+                          type="tel"
+                          pattern="[0-9]*"
+                          inputMode="numeric"
+                          value={formData.phone}
+                          onChange={(e) =>
+                            handleChange("phone", e.target.value)
+                          }
+                          placeholder="1234567890"
+                          className="flex-1"
+                          maxLength={15}
+                        />
                       </div>
-                      <div>
-                        <p className="text-sm text-muted-foreground">
-                          {info.label}
-                        </p>
-                        <p className="font-medium">{info.value}</p>
-                      </div>
-                    </a>
-                  );
-                })}
-              </CardContent>
-            </Card>
+                    </div>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Our Social Presence</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  {socialLinks.map((social, index) => {
-                    return (
+                    <div className="space-y-2">
+                      <Label htmlFor="message">
+                        Project Details (Optional)
+                      </Label>
+                      <Textarea
+                        id="message"
+                        value={formData.message}
+                        onChange={(e) =>
+                          handleChange("message", e.target.value)
+                        }
+                        placeholder="Tell us about your project goals, timeline, and any specific requirements..."
+                        rows={5}
+                        maxLength={1000}
+                      />
+                    </div>
+
+                    {/* Cloudflare Turnstile - Only render if we have the site key */}
+                    {process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && (
+                      <div className="space-y-2">
+                        <Label>Security Verification *</Label>
+                        <div
+                          className="cf-turnstile"
+                          data-sitekey={
+                            process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
+                          }
+                          data-callback="onTurnstileSuccess"
+                          data-error-callback="onTurnstileError"
+                        />
+                      </div>
+                    )}
+
+                    <motion.div variants={fadeIn}>
                       <Button
-                        key={index}
-                        variant="outline"
-                        asChild
-                        className="justify-start"
+                        type="submit"
+                        className="w-full"
+                        disabled={
+                          isSubmitting ||
+                          (process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY &&
+                          !turnstileToken
+                            ? true
+                            : undefined)
+                        }
                       >
-                        <a href={social.href}>
-                          {/* Handle different icon types */}
-                          {social.type === "lucide" && social.icon ? (
-                            <social.icon className="w-4 h-4 mr-2" />
-                          ) : social.type === "react-icon" && social.icon ? (
-                            <span className="mr-2">{social.icon}</span>
-                          ) : social.type === "custom" && social.iconSrc ? (
-                            <Image
-                              src={
-                                theme === "dark"
-                                  ? social.iconSrc.dark
-                                  : social.iconSrc.light
-                              }
-                              alt={`${social.label} icon`}
-                              width={12}
-                              height={12}
-                              className="mr-2"
-                            />
-                          ) : null}
-                          {social.label}
-                        </a>
+                        {isSubmitting ? "Sending..." : "Start Your Project"}
+                        <Send className="ml-2 w-4 h-4" />
                       </Button>
+                    </motion.div>
+                  </form>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </motion.div>
+
+          <motion.div variants={fadeInRight} className="space-y-6">
+            <motion.div variants={fadeInUp}>
+              <Card>
+                <CardHeader>
+                  <CardTitle>Connect With Us</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {contactInfo.map((info, index) => {
+                    const Icon = info.icon;
+                    return (
+                      <motion.a
+                        key={index}
+                        href={info.href}
+                        className="flex items-center gap-4 p-3 rounded-lg hover:bg-muted transition-colors"
+                        variants={fadeIn}
+                      >
+                        <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                          <Icon className="w-5 h-5 text-primary" />
+                        </div>
+                        <div>
+                          <p className="text-sm text-muted-foreground">
+                            {info.label}
+                          </p>
+                          <p className="font-medium">{info.value}</p>
+                        </div>
+                      </motion.a>
                     );
                   })}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            <motion.div variants={fadeInUp}>
+              <Card>
+                <CardHeader>
+                  <CardTitle>Our Social Presence</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {socialLinks.map((social, index) => {
+                      return (
+                        <motion.div key={index} variants={fadeIn}>
+                          <Button
+                            variant="outline"
+                            asChild
+                            className="justify-start"
+                          >
+                            <a href={social.href}>
+                              {/* Handle different icon types */}
+                              {social.type === "lucide" && social.icon ? (
+                                <social.icon className="w-4 h-4 mr-2" />
+                              ) : social.type === "react-icon" &&
+                                social.icon ? (
+                                <span className="mr-2">{social.icon}</span>
+                              ) : social.type === "custom" && social.iconSrc ? (
+                                <Image
+                                  src={
+                                    theme === "dark"
+                                      ? social.iconSrc.dark
+                                      : social.iconSrc.light
+                                  }
+                                  alt={`${social.label} icon`}
+                                  width={12}
+                                  height={12}
+                                  className="mr-2"
+                                />
+                              ) : null}
+                              {social.label}
+                            </a>
+                          </Button>
+                        </motion.div>
+                      );
+                    })}
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );

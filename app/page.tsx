@@ -9,9 +9,11 @@ import { Footer } from "@/components/sections/footer";
 import FloatingButtons from "@/components/sections/FloatingButtons";
 import LoadingScreen from "@/components/sections/LoadingScreen";
 
+import { LoadingProvider } from "@/context/LoadingContext";
+
 export default function Page() {
   return (
-    <>
+    <LoadingProvider>
       <LoadingScreen />
       <div className="min-h-screen flex flex-col">
         <Header />
@@ -26,6 +28,6 @@ export default function Page() {
         <Footer />
         <FloatingButtons />
       </div>
-    </>
+    </LoadingProvider>
   );
 }

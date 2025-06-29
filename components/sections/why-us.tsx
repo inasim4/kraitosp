@@ -1,10 +1,10 @@
+"use client";
 import {
   Headphones,
   MessagesSquare,
   Code,
   Search,
   Award,
-  Bolt,
   Zap,
 } from "lucide-react";
 import {
@@ -15,8 +15,22 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { motion, useInView } from "framer-motion";
+import { useLoading } from "@/context/LoadingContext";
+import { useRef } from "react";
+import {
+  staggerContainer,
+  fadeInUp,
+  fadeInLeft,
+  fadeInRight,
+  fadeIn,
+} from "@/lib/animations";
 
 export function WhyUs() {
+  const { isLoading } = useLoading();
+  const sectionRef = useRef(null);
+  const inView = useInView(sectionRef, { once: true, margin: "-50px" });
+
   const features = [
     {
       icon: MessagesSquare,
@@ -57,38 +71,67 @@ export function WhyUs() {
   ];
 
   return (
-    <section id="why-us" className="w-full py-16 md:py-20 bg-muted/50">
+    <section id="why-us" className="w-full py-16 md:py-20 bg-background">
       <div className="container mx-auto px-4 max-w-7xl">
-        <div className="text-center space-y-4 mb-16">
-          <Badge variant="secondary" className="px-4 py-2">
-            Why Choose Us
-          </Badge>
-          <h2 className="text-3xl md:text-4xl font-bold">Why Work With Us</h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            We're your dedicated partners in crafting a smart online presence.
-            Here's what sets us apart and makes us the web professionals you
-            need.
-          </p>
-        </div>
+        {/* Single motion container for the whole section */}
+        <motion.div
+          ref={sectionRef}
+          variants={staggerContainer}
+          initial="hidden"
+          animate={!isLoading && inView ? "visible" : "hidden"}
+        >
+          {/* Header Section */}
+          <div className="text-center space-y-4 mb-16">
+            <motion.div variants={fadeInUp}>
+              <Badge variant="secondary" className="px-4 py-2">
+                Why Choose Us
+              </Badge>
+            </motion.div>
+            <motion.h2
+              variants={fadeInUp}
+              className="text-3xl md:text-4xl font-bold"
+            >
+              Why Work With Us
+            </motion.h2>
+            <motion.p
+              variants={fadeInUp}
+              className="text-xl text-muted-foreground max-w-3xl mx-auto"
+            >
+              We're your dedicated partners in crafting a smart online presence.
+              Here's what sets us apart and makes us the web professionals you
+              need.
+            </motion.p>
+          </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {features.map((feature, index) => {
-            const Icon = feature.icon;
-            return (
-              <Card key={index} className="transition-all hover:shadow-md">
-                <CardHeader>
-                  <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                    <Icon className="w-6 h-6 text-primary" />
-                  </div>
-                  <CardTitle className="text-lg">{feature.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription>{feature.description}</CardDescription>
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
+          {/* Features Grid */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {features.map((feature, index) => {
+              const Icon = feature.icon;
+              return (
+                // Alternate left/right fade for best-practice effect
+                <motion.div
+                  variants={index % 2 === 0 ? fadeInLeft : fadeInRight}
+                  key={index}
+                >
+                  <Card className="transition-all hover:shadow-md h-full">
+                    <CardHeader>
+                      <motion.div
+                        variants={fadeIn}
+                        className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4"
+                      >
+                        <Icon className="w-6 h-6 text-primary" />
+                      </motion.div>
+                      <CardTitle className="text-lg">{feature.title}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <CardDescription>{feature.description}</CardDescription>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              );
+            })}
+          </div>
+        </motion.div>
       </div>
     </section>
   );

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLoading } from "@/context/LoadingContext";
 
 const greetings = [
   { language: "English", text: "Hello!" },
@@ -17,7 +18,7 @@ const greetings = [
 
 export default function LoadingScreen() {
   const [currentGreeting, setCurrentGreeting] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
+  const { isLoading, setIsLoading } = useLoading();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -32,7 +33,7 @@ export default function LoadingScreen() {
       clearInterval(interval);
       clearTimeout(timer);
     };
-  }, []);
+  }, [setIsLoading]);
 
   if (!isLoading) return null;
 
